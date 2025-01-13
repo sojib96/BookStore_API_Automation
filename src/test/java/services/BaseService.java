@@ -13,10 +13,6 @@ public abstract class BaseService {
         return RestAssured.given().baseUri(BASE_URL);
     }
 
-    private RequestSpecification addAuthorizationHeader(RequestSpecification requestSpec, String authToken) {
-        return requestSpec.header("Authorization", "Bearer " + authToken);
-    }
-
     protected Response get(String endPoint, String userId, String authToken) {
         RequestSpecification requestSpec = getRequestSpecification();
         requestSpec = addAuthorizationHeader(requestSpec, authToken);
@@ -38,8 +34,12 @@ public abstract class BaseService {
     }
 
     protected void validateResponse(Response response) {
-        if (response.getStatusCode() != 200 && response.getStatusCode() != 201) {
+        if (response.getStatusCode() != 200 && response.getStatusCode() != 201  && response.getStatusCode() != 204) {
             throw new RuntimeException("API call failed with status code " + response.getStatusCode() + ": " + response.getBody().asString());
         }
+    }
+
+    private RequestSpecification addAuthorizationHeader(RequestSpecification requestSpec, String authToken) {
+        return requestSpec.header("Authorization", "Bearer " + authToken);
     }
 }

@@ -20,6 +20,10 @@ public class JsonUtility {
         }
     }
 
+    public <T> T deserializeJsonFromString(String jsonString, Class<T> tClass) {
+        return GSON.fromJson(jsonString, tClass);
+    }
+
     public <T> void serializeJson(String filePath, T object) {
         try (FileWriter writer = new FileWriter(filePath)) {
             GSON.toJson(object, writer);
